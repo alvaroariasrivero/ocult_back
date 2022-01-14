@@ -4,7 +4,7 @@ const User = require('../models/user');
 const createUser = async(req, res) => {
     let data;
     try {
-        data = await User.create({'name': req.body.name, 'password': req.body.password, 'username': req.body.username, 'correct_answers': 0})
+        data = await User.create({'name': req.body.name, 'password': req.body.password, 'username': req.body.username, 'correct_answers': 0, 'quiz_done': false, 'logged': false})
         res.status(200).json(data);
     } catch (error) {
         res.status(400).json({'error': error})
@@ -33,7 +33,7 @@ const userScore = async(req, res) => {
     let data;
     try {
         const filter = { username: req.body.username };
-        const update = { correct_answers: req.body.correct_answers };
+        const update = { correct_answers: req.body.correct_answers,  quiz_done: true};
         data = await User.findOneAndUpdate(filter, update, {new: true});
         res.status(200).json(data);
     } catch (error) {

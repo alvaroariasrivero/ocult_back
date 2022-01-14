@@ -4,6 +4,8 @@ const objectSchema = {
     username: {type: String, unique : true},
     name: {type: String},
     password: {type: String},
+    quiz_done: Boolean,
+    logged: Boolean,
     correct_answers: Number
 }
 

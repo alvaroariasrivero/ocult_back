@@ -9,18 +9,16 @@ const jwt = require('jsonwebtoken');
 
 require('./utils/dbmongocon');
 
+
+//Middlewares
 app.use(cors());
 app.use(express.json());
+// para traernos datos de objetos de un formulario,permite procesarlo y crear el objeto.Extended, no acepta datos como imagen
+app.use(express.urlencoded());
 
-app.get('/', (req, res) => {
-  res.status(200).send('Plantilla back')
-})
 
-app.get('/api/questions', questionsApi.getAllQuestions);
-app.post('/api/login', userApi.loginRouter);
-app.post('/api/signUp', userApi.createUser);
-app.post('/api/score', userApi.userScore);
 
+//Conexion server
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
   });

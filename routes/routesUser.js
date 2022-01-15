@@ -1,19 +1,18 @@
 const express = require('express');
 const router =express.Router();
+const questionsApi = require('../controllers/questionsApi');
+const userApi = require('../controllers/userApi');
+const postgreControllers = require('../controllers/postgreControllers')
 
 
 //Routes 
-app.get('/', (req, res) => {
-    res.status(200).send('Plantilla back')
-  })
-  
-  app.get('/api/questions', questionsApi.getAllQuestions);
-  app.post('/api/login', userApi.loginRouter);
-  app.post('/api/signUp', userApi.createUser);
-  app.post('/api/score', userApi.userScore);
+  router.get('/api/questions', questionsApi.getAllQuestions);
+  router.post('/api/score', userApi.userScore);
   
   //Routes Postgre
-  router.get('/api/users', getUsers);
+  router.get('/api/users', postgreControllers.getUsers);
+  router.post('/api/signUp', postgreControllers.createUser);
+  // router.post('/api/login', postgreControllers.loginRouter);
   
   module.exports = router;
   

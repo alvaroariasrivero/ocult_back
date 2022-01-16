@@ -2,17 +2,23 @@ const express = require('express');
 const router =express.Router();
 const questionsApi = require('../controllers/questionsApi');
 const userApi = require('../controllers/userApi');
-const postgreControllers = require('../controllers/postgreControllers')
+const userControllers = require('../controllers/userControllers')
 
+
+router.get('/', (req, res) => {
+  res.send("Localhost working!")
+});
 
 //Routes 
   router.get('/api/questions', questionsApi.getAllQuestions);
   router.post('/api/score', userApi.userScore);
   
   //Routes Postgre
-  router.get('/api/users', postgreControllers.getUsers);
-  router.post('/api/signUp', postgreControllers.createUser);
-  // router.post('/api/login', postgreControllers.loginRouter);
+  router.get('/api/users', userControllers.getUsers);
+  router.post('/api/signup', userControllers.createUser);
+  // router.post('/api/login', userControllers.loginRouter);
+
+  router.get('/api/profile', userControllers.getActualUser);
   
   module.exports = router;
   

@@ -10,7 +10,6 @@ const getUsers = async (req, res) => {
         connection = await pool.connect();
         response = await pool.query('SELECT * FROM users')
         console.log(response.rows)
-        // res.status(200).json(response.rows)
     } catch (error) {
         console.log(error);
 
@@ -26,7 +25,6 @@ const getActualUser = async (req, res) => {
         connection = await pool.connect();
         response = await pool.query('SELECT * FROM users WHERE id = $1), [1]')
         console.log(response.rows)
-        // res.status(200).json(response.rows)
     } catch (error) {
         console.log(error);
 
@@ -37,68 +35,71 @@ const getActualUser = async (req, res) => {
 }
 
 //Funcion para crear usuario-Registrar
-const createUser = async (req, res) => {
-    // const body = req.body
-    try{
-        console.log(req.body)
-
-    }catch (error) {
-        console.log(error)
+const createUser = async (req,res) => {
+    const {id_company, username, email, password, image} = req.body;
+    const saltRounds = 10;
+    const hashPassword = await bcrypt.hash(password, saltRounds);
+    let connection,response;
+    try {
+        connection = await pool.connect();
+        response = await pool.query(`INSERT INTO users(id_company, name, email, password, image) VALUES ($1, $2, $3, $4, $5 )`,
+        [
+            id_company, 
+            username, 
+            email, 
+            hashPassword,
+            image
+        ]
+        );
+        console.log({username} ,"registrado correctamente")
+    } catch (error) {
+        console.log(error.detail);
+    } finally {
+        connection.release();
     }
-    // try{
-    //     const {id_company, name, email, password, image} = req.body;
-    //     let errors = [];
+     return response
+}
 
-    //     if(!id_company || !name || !email || !password ) {
-    //         errors.push({msg : "Completa todos los campos"})
-    //     }
-
-    //     if(password.length <= 6) {
-    //         errors.push({msg : "La contraseña tiene que tener al menos 6 dígitos"});
-            
-    //     }  else {
-    //         const result = await User.createUser(req.body);
-
-    //             if (result === 1) {
-    //                 console.log("usuario creado")
-    //             } else {
-    //                 console.log("error")
-    //             }
-    //     }
-    // } catch (error) {
-    //     console.log(error)
-    // }    
-};
-
-// const createUser = async (res,req) => {
-//     // let userData = req.body;
-//     console.log(req.userData)
-//     const {id_company, name, email, password, image} = req.body;
-//     let connection,response;
-//     try {
-//         connection = await pool.connect();
-//         // response = await pool.query(`INSERT INTO users(id_company, name, email,password,image) VALUES ($1, $2, $3, $4, $5 )`,
-//         // [
-//         //     id_company, 
-//         //     name, 
-//         //     email, 
-//         //     password,
-//         //     image
-//         // ]
-//         // );
-//         // res.status(200).json(response.rows)
-//     } catch (error) {
-//         console.log(error);
-
-//     } finally {
-//         connection.release();
-//     }
-//      return response
-// }
-
+const userLogin = async(req, res) => {
+    let connection,response;
+    try {
+        const {email, password} = req.body;
+        connection = await pool.connect();
+        response = await pool.query('SELECT * FROM users WHERE email = $1', [email])
+        console.log(response.rows)
+        const match = await bcrypt.compare(password, response.rows.password);
+        // if(!match) return res.status(400).json({msg: "Wrong Password"});
+        // const userId = user[0].id;
+        // const name = user[0].name;
+        // const email = user[0].email;
+        // const accessToken = jwt.sign({userId, name, email}, process.env.ACCESS_TOKEN_SECRET,{
+        //     expiresIn: '15s'
+        // });
+        // const refreshToken = jwt.sign({userId, name, email}, process.env.REFRESH_TOKEN_SECRET,{
+        //     expiresIn: '1d'
+        // });
+        // await Users.update({refresh_token: refreshToken},{
+        //     where:{
+        //         id: userId
+        //     }
+        // });
+        // res.cookie('refreshToken', refreshToken,{
+        //     httpOnly: true,
+        //     maxAge: 24 * 60 * 60 * 1000
+        // });
+        // res.json({ accessToken });
+    } catch (error) {
+        console.log(error);
+        res.status(404).json({msg:"Email not found"});
+    } finally {
+        connection.release();
+    }
+     return response
+}
 
 module.exports = {
     getUsers,
     createUser,
-    getActualUser
+    getActualUser,
+    userLogin
 }

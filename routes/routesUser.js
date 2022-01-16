@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
   //Routes Postgre
   router.get('/api/users', userControllers.getUsers);
   router.post('/api/signup', userControllers.createUser);
-  // router.post('/api/login', userControllers.loginRouter);
+  router.post('/api/login', userControllers.userLogin);
 
   router.get('/api/profile', userControllers.getActualUser);
   

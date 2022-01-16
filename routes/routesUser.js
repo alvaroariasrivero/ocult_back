@@ -2,7 +2,7 @@ const express = require('express');
 const router =express.Router();
 const questionsApi = require('../controllers/questionsApi');
 const userApi = require('../controllers/userApi');
-const postgreControllers = require('../controllers/postgreControllers')
+const userControllers = require('../controllers/userControllers')
 
 
 //Routes 
@@ -10,9 +10,9 @@ const postgreControllers = require('../controllers/postgreControllers')
   router.post('/api/score', userApi.userScore);
   
   //Routes Postgre
-  router.get('/api/users', postgreControllers.getUsers);
-  router.post('/api/signUp', postgreControllers.createUser);
-  // router.post('/api/login', postgreControllers.loginRouter);
+  router.get('/api/users', userControllers.getUsers);
+  router.post('/api/signUp', userControllers.createUser);
+  // router.post('/api/login', userControllers.loginRouter);
   
   module.exports = router;
   

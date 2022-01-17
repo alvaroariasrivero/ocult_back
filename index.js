@@ -1,26 +1,30 @@
-require('dotenv').config();
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
-const port = 5000;
-const questionsApi = require('./controllers/questionsApi');
-const userApi = require('./controllers/userApi');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }))
+// app.use(bodyParser.json()) 
 
+require('dotenv').config();
 require('./utils/dbmongocon');
 
+//Middlewares
 app.use(cors());
-app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.status(200).send('Plantilla back')
-})
+// Port 
+const port = 5000;
 
-app.get('/api/questions', questionsApi.getAllQuestions);
-app.post('/api/login', userApi.loginRouter);
-app.post('/api/signUp', userApi.createUser);
-app.post('/api/score', userApi.userScore);
+// para traernos datos de objetos de un formulario,permite procesarlo y crear el objeto.Extended, no acepta datos como imagen
+app.use(cookieParser()); //Permite trabajar con cookies
 
+//Conexion server
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
-  });
+  console.log(`Example app listening at http://localhost:${port}`)
+});
+
+// Routes 
+app.use(require('./routes/routesUser'));
+

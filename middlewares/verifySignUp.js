@@ -1,5 +1,6 @@
 const pool = require('../utils/postgreSQL');
 
+// Funcion que valida si el correo a registrar ya existe 
 const checkDuplicateEmail = async (req, res,next) => {
     let connection,response;
     try {

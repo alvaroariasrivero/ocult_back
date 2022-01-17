@@ -60,37 +60,34 @@ const createUser = async (req,res) => {
      return response
 }
 
-const userLogin = async(req, res) => {
-    let connection,response;
+const userLogin = async (req, res) => {
+    let connection, response;
     try {
-        const {email, password} = req.body;
+        const { email, password } = req.body;
         connection = await pool.connect();
         response = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-
-        if(!response.rows){
+        if (!response.rows[0]) {
             return res.status(404).send({ message: "Usuario no encontrado." });
-
         } else {
-            const match = await bcrypt.compare(password, response.rows.password); 
-            if(!match){
+            const match = await bcrypt.compare(password, response.rows[0].password);
+            if (!match) {
                 return res.status(401).send({
                     accesToken: null,
-                    message: "Contraseña incorrecta"  }) 
+                    message: "Contraseña incorrecta"
+                })
             } else {
-                token = jwt.sign({ id: user.id }, config.SECRET_JWT, {
+                const accesToken  = jwt.sign({email}, process.env.SECRET_JWT, {
                     expiresIn: 86400 // 24 hours
-                  });
-
+                });
+                console.log(accesToken);
             }
         }
-
-    }catch (error) {
+    } catch (error) {
         console.log(error);
-        res.status(404).json({msg:"Email not found"});
-    }finally {
+        res.status(404).send({ message: "Email not found" });
+    } finally {
         connection.release();
     }
-
     return response
 }
 

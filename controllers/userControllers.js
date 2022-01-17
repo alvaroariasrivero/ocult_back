@@ -77,7 +77,7 @@ const userLogin = async(req, res) => {
                     accesToken: null,
                     message: "Contraseña incorrecta"  }) 
             } else {
-                token = jwt.sign({ id: user.id }, config.secret, {
+                token = jwt.sign({ id: user.id }, config.SECRET_JWT, {
                     expiresIn: 86400 // 24 hours
                   });
 
@@ -93,7 +93,6 @@ const userLogin = async(req, res) => {
 
     return response
 }
-
 
 
 

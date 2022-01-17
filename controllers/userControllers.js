@@ -23,7 +23,7 @@ const getActualUser = async (req, res) => {
     let connection,response;
     try {
         connection = await pool.connect();
-        response = await pool.query('SELECT * FROM users WHERE id = $1), [1]')
+        response = await pool.query('SELECT * FROM users WHERE id = $1)', [1])
         console.log(response.rows)
     } catch (error) {
         console.log(error);

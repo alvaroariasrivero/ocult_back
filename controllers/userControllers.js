@@ -65,10 +65,46 @@ const userLogin = async(req, res) => {
     try {
         const {email, password} = req.body;
         connection = await pool.connect();
-        response = await pool.query('SELECT * FROM users WHERE email = $1', [email])
-        console.log(response.rows)
-        const match = await bcrypt.compare(password, response.rows.password);
-        // if(!match) return res.status(400).json({msg: "Wrong Password"});
+        response = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+
+        if(!response.rows){
+            return res.status(404).send({ message: "Usuario no encontrado." });
+
+        } else {
+            const match = await bcrypt.compare(password, response.rows.password); 
+            if(!match){
+                return res.status(401).send({
+                    accesToken: null,
+                    message: "Contraseña incorrecta"  }) 
+            } else {
+                token = jwt.sign({ id: user.id }, config.secret, {
+                    expiresIn: 86400 // 24 hours
+                  });
+
+            }
+        }
+
+    }catch (error) {
+        console.log(error);
+        res.status(404).json({msg:"Email not found"});
+    }finally {
+        connection.release();
+    }
+
+    return response
+}
+
+
+
+
+module.exports = {
+    getUsers,
+    createUser,
+    getActualUser,
+    userLogin
+}
+
+ // 
         // const userId = user[0].id;
         // const name = user[0].name;
         // const email = user[0].email;
@@ -88,18 +124,3 @@ const userLogin = async(req, res) => {
         //     maxAge: 24 * 60 * 60 * 1000
         // });
         // res.json({ accessToken });
-    } catch (error) {
-        console.log(error);
-        res.status(404).json({msg:"Email not found"});
-    } finally {
-        connection.release();
-    }
-     return response
-}
-
-module.exports = {
-    getUsers,
-    createUser,
-    getActualUser,
-    userLogin
-}

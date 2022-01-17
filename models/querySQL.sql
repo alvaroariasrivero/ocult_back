@@ -2,6 +2,7 @@
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
+    isAdmin boolean DEFAULT FALSE,
     id_company INTEGER,
     name VARCHAR (40),
     email TEXT UNIQUE,

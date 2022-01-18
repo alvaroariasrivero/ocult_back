@@ -78,10 +78,15 @@ const userLogin = async (req, res) => {
                     message: "Contraseña incorrecta"
                 })
             } else {
-                accessToken  = jwt.sign({mail }, process.env.SECRET_JWT, {
+                const userData = ({
+                    "name": response.rows[0].name,
+                    "email": response.rows[0].email,
+                    "image": response.rows[0].image,
+                    "last_score": response.rows[0].last_score,
+                })
+                accessToken = jwt.sign({userData}, process.env.SECRET_JWT, {
                     expiresIn: 86400 // 24 hours
                 });
-                console.log(accessToken);
             }
         }
     } catch (error) {

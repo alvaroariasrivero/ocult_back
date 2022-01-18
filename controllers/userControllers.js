@@ -52,7 +52,9 @@ const createUser = async (req,res) => {
         );
         console.log({username} ,"registrado correctamente")
     } catch (error) {
-        console.log(error.detail);
+        // console.log(error.detail);
+        return res.send({message: error});
+
     } finally {
         connection.release();
     }
@@ -84,7 +86,7 @@ const userLogin = async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-        res.status(404).send({ message: "Email not found" });
+        res.status(404).send({ message: "No se ha encontrado este correo" });
     } finally {
         connection.release();
     }

@@ -8,6 +8,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }))
 // app.use(bodyParser.json()) 
 
+
+
 require('dotenv').config();
 require('./utils/dbmongocon');
 

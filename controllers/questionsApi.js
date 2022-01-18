@@ -10,8 +10,4 @@ const getAllQuestions = async(req, res) => {
     }
 };
 
-getQuestions = {
-    getAllQuestions
-}
-
-module.exports = getQuestions;
+module.exports = getAllQuestions;

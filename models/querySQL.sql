@@ -2,11 +2,12 @@
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
+    isAdmin boolean DEFAULT FALSE,
     id_company INTEGER,
     name VARCHAR (40),
     email TEXT UNIQUE,
     password VARCHAR(70),
-    image VARCHAR(500),
+    image VARCHAR(500) DEFAULT 'https://www.kindpng.com/picc/m/780-7804962_cartoon-avatar-png-image-transparent-avatar-user-image.png',
     last_score INTEGER,
     correct_answer VARCHAR[],
     incorrect_answer VARCHAR[],

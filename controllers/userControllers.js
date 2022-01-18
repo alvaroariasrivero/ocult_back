@@ -52,8 +52,8 @@ const createUser = async (req,res) => {
         );
         console.log({username} ,"registrado correctamente")
     } catch (error) {
-        // console.log(error.detail);
-        return res.send({message: error});
+        console.log(error.detail);
+        return res.status(401).send({message: error});
 
     } finally {
         connection.release();

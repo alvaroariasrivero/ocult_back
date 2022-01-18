@@ -6,6 +6,7 @@ const objectSchema = {
     password: {type: String},
     quiz_done: Boolean,
     logged: Boolean,
+    email: String,
     correct_answers: Number
 }
 

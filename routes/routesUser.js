@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
 });
 
 //Routes 
-router.get('/api/questions', questionsApi.getAllQuestions);
+router.get('/api/questions', questionsApi);
 router.post('/api/score', userApi.userScore);
 
 //Admin routes 

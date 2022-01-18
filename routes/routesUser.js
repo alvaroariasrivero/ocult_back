@@ -16,7 +16,7 @@ router.get('/api/questions', questionsApi.getAllQuestions);
 router.post('/api/score', userApi.userScore);
 
 //Admin routes 
-router.get('/api/users', verifyUserToken.verifyToken,  verifyUserToken.isAdmin, userControllers.getUsers);
+router.get('/api/dashboard', verifyUserToken.verifyToken,  verifyUserToken.isAdmin, userControllers.getUsers);
 
 // Autentication Routes 
 router.post('/api/signup', verifySignUp.checkDuplicateEmail, userControllers.createUser);

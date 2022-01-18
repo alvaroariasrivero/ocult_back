@@ -36,19 +36,18 @@ const getActualUser = async (req, res) => {
 
 //Funcion para crear usuario-Registrar
 const createUser = async (req,res) => {
-    const {id_company, username, email, password, image} = req.body;
+    const {id_company, username, email, password} = req.body;
     const saltRounds = 10;
     const hashPassword = await bcrypt.hash(password, saltRounds);
     let connection,response;
     try {
         connection = await pool.connect();
-        response = await pool.query(`INSERT INTO users(id_company, name, email, password, image) VALUES ($1, $2, $3, $4, $5 )`,
+        response = await pool.query(`INSERT INTO users(id_company, name, email, password) VALUES ($1, $2, $3, $4)`,
         [
             id_company, 
             username, 
             email, 
             hashPassword,
-            image
         ]
         );
         console.log({username} ,"registrado correctamente")
@@ -62,10 +61,11 @@ const createUser = async (req,res) => {
 
 const userLogin = async (req, res) => {
     let connection, response;
+    let accessToken
     try {
-        const { email, password } = req.body;
+        const { mail, password } = req.body;
         connection = await pool.connect();
-        response = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+        response = await pool.query('SELECT * FROM users WHERE email = $1', [mail]);
         if (!response.rows[0]) {
             return res.status(404).send({ message: "Usuario no encontrado." });
         } else {
@@ -76,10 +76,10 @@ const userLogin = async (req, res) => {
                     message: "Contraseña incorrecta"
                 })
             } else {
-                const accesToken  = jwt.sign({email}, process.env.SECRET_JWT, {
+                accessToken  = jwt.sign({mail }, process.env.SECRET_JWT, {
                     expiresIn: 86400 // 24 hours
                 });
-                console.log(accesToken);
+                console.log(accessToken);
             }
         }
     } catch (error) {
@@ -88,7 +88,7 @@ const userLogin = async (req, res) => {
     } finally {
         connection.release();
     }
-    return response
+    res.status(200).json({accessToken});
 }
 
 

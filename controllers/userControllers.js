@@ -100,9 +100,10 @@ const userLogin = async (req, res) => {
 
 const userScore = async(req, res) => {
     try {
-        const {mail, score} = req.body;
+        const {userEmail, score} = req.body;
+        console.log('Esto', userEmail, score)
         connection = await pool.connect();
-        response = await pool.query('UPDATE users SET last_score = $1 WHERE email = $2', [score, mail]);
+        response = await pool.query('UPDATE users SET last_score = $1 WHERE email = $2', [score, userEmail]);
         res.status(200).json(response);
     } catch (error) {
         res.status(400).json({"error":error});

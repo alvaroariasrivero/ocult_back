@@ -5,18 +5,16 @@ const jwt = require('jsonwebtoken');
 
 //Funcion para traer todos los usuarios
 const getUsers = async (req, res) => {
-    let connection,response;
     try {
         connection = await pool.connect();
         response = await pool.query('SELECT * FROM users')
-        console.log(response.rows)
+        res.status(200).json(response);
     } catch (error) {
-        console.log(error);
-
-    }finally {
+        res.status(404).json({"error":error});
+      }finally {
         connection.release();
     }
-    return response
+    return res
 }
 
 const getActualUser = async (req, res) => {

@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 
 //Routes 
 router.get('/api/questions', questionsApi);
-router.post('/api/score', userApi.userScore);
+router.post('/api/score', userControllers.userScore);
 
 //Admin routes 
 router.get('/api/dashboard', verifyUserToken.verifyToken,  verifyUserToken.isAdmin, userControllers.getUsers);

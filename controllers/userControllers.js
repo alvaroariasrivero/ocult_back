@@ -93,13 +93,27 @@ const userLogin = async (req, res) => {
     res.status(200).json({accessToken});
 }
 
+const userScore = async(req, res) => {
+    try {
+        const {mail, score} = req.body;
+        connection = await pool.connect();
+        response = await pool.query('UPDATE users SET last_score = $1 WHERE email = $2', [score, mail]);
+        res.status(200).json(response);
+    } catch (error) {
+        res.status(400).json({"error":error});
+    } finally {
+        connection.release();
+    }
+}
+
 
 
 module.exports = {
     getUsers,
     createUser,
     getActualUser,
-    userLogin
+    userLogin,
+    userScore
 }
 
  // 

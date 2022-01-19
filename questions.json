@@ -121,11 +121,11 @@
         "question": "¿Qué hacer si cae en las redes de un phishing?",
         "answers":[
             {"answer_text": "Ambas respuestas son correctas", "iscorrect": true},
-            {"answer_text": "Comprobar que tiene activada la verificación en dos pasos, avisar al soporte técnico de IT de su trabajo o escuela e  informar a las autoridades.", "iscorrect": false},
-            {"answer_text": "“https” es la versión nueva", "iscorrect": false}
+            {"answer_text": "Comprobar que tiene activada la verificación en dos pasos, avisar al soporte técnico de IT de su trabajo o escuela e  informar a las autoridades", "iscorrect": false},
+            {"answer_text": "Escanear nuestro dispositivo con un antivirus actualizado, anotar todos los detalles del incidente y cambiar la contraseña de las cuentas afectadas", "iscorrect": false}
         ],
-        "affirmative_message": "¡Sí señor! “https” es un protocolo de comunicación de Internet que protege la integridad y la confidencialidad de los datos de los usuarios entre sus ordenadores y el sitio web. Agrega 3 capas de seguridad con “cifrado, integridad y autenticación de los datos”.",
-        "negative_message": "¡Quizás la próxima! El protocolo https hace más segura la navegación en internet con “cifrado, integridad y autenticación de los datos”."
+        "affirmative_message": "¡Justo! Al tener a detalle los datos que han podido robar y de qué forma, será más sencillo informar al equipo de IT o a las autoridades, del mismo modo cambiar las contraseñas y tener activa la verificación en 2 pasos ayudan a securizar tu cuenta de nuevo.",
+        "negative_message": "¡Con algunos pasos más! Cuanto más detallado el cómo sucedió y qué te han podido robar , más fácil será informar a quienes sea necesario, por otra parte cambiar las contraseñas y tener activa la verificación en 2 pasos ayudan a securizar tu cuenta de nuevo."
     },
     {
         "question": "¿Cómo proteges tu información cuando usas una app?",

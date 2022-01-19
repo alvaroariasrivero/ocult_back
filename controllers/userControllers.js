@@ -78,10 +78,15 @@ const userLogin = async (req, res) => {
                     message: "Contraseña incorrecta"
                 })
             } else {
-                accessToken  = jwt.sign({mail }, process.env.SECRET_JWT, {
+                const userData = ({
+                    "name": response.rows[0].name,
+                    "email": response.rows[0].email,
+                    "image": response.rows[0].image,
+                    "last_score": response.rows[0].last_score,
+                })
+                accessToken = jwt.sign({userData}, process.env.SECRET_JWT, {
                     expiresIn: 86400 // 24 hours
                 });
-                console.log(accessToken);
             }
         }
     } catch (error) {
@@ -93,13 +98,27 @@ const userLogin = async (req, res) => {
     res.status(200).json({accessToken});
 }
 
+const userScore = async(req, res) => {
+    try {
+        const {mail, score} = req.body;
+        connection = await pool.connect();
+        response = await pool.query('UPDATE users SET last_score = $1 WHERE email = $2', [score, mail]);
+        res.status(200).json(response);
+    } catch (error) {
+        res.status(400).json({"error":error});
+    } finally {
+        connection.release();
+    }
+}
+
 
 
 module.exports = {
     getUsers,
     createUser,
     getActualUser,
-    userLogin
+    userLogin,
+    userScore
 }
 
  // 

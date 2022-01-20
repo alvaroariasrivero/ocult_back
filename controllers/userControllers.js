@@ -5,18 +5,16 @@ const jwt = require('jsonwebtoken');
 
 //Funcion para traer todos los usuarios
 const getUsers = async (req, res) => {
-    let connection,response;
     try {
         connection = await pool.connect();
         response = await pool.query('SELECT * FROM users')
-        console.log(response.rows)
+        res.status(200).json(response);
     } catch (error) {
-        console.log(error);
-
-    }finally {
+        res.status(404).json({"error":error});
+      }finally {
         connection.release();
     }
-    return response
+    return res
 }
 
 const getActualUser = async (req, res) => {
@@ -100,10 +98,9 @@ const userLogin = async (req, res) => {
 
 const userScore = async(req, res) => {
     try {
-        const {userEmail, score} = req.body;
-        console.log('Esto', userEmail, score)
+        const {userEmail, questionLength, score} = req.body;
         connection = await pool.connect();
-        response = await pool.query('UPDATE users SET last_score = $1 WHERE email = $2', [score, userEmail]);
+        response = await pool.query('UPDATE users SET last_score = $1, last_quiz_questions = $2 WHERE email = $3', [score, questionLength, userEmail]);
         res.status(200).json(response);
     } catch (error) {
         res.status(400).json({"error":error});
@@ -112,14 +109,28 @@ const userScore = async(req, res) => {
     }
 }
 
-
+const getUserScore = async(email, res) => {
+    let connection, response;
+    try {
+        connection = await pool.connect();
+        const result = await pool.query(`SELECT last_score, last_quiz_questions FROM users WHERE email = $1`, [email]);
+        response = result.rows
+    } catch (error) {
+        console.log(error)
+    } finally {
+        connection.release();
+    }
+    console.log("****RESPONSE *****", response);
+    return response;
+}
 
 module.exports = {
     getUsers,
     createUser,
     getActualUser,
     userLogin,
-    userScore
+    userScore,
+    getUserScore
 }
 
  // 

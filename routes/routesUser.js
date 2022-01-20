@@ -15,9 +15,14 @@ router.get('/', (req, res) => {
 router.get('/api/questions', questionsApi);
 router.post('/api/score', userControllers.userScore);
 
-//Admin routes 
-router.get('/api/dashboard', verifyUserToken.verifyToken,  verifyUserToken.isAdmin, userControllers.getUsers);
+router.get('/api/score', async (req, res) => {
+  const data = await userControllers.getUserScore(req.query.email)
+  res.status(200).json(data);    
+})
 
+//Admin routes 
+router.get('/api/dashboard',userControllers.getUsers);
+// verifyUserToken.isAdmin , verifyUserToken.verifyToken,  
 // Autentication Routes 
 router.post('/api/signup', verifySignUp.checkDuplicateEmail, userControllers.createUser);
 router.post('/api/login', userControllers.userLogin);

@@ -15,6 +15,11 @@ router.get('/', (req, res) => {
 router.get('/api/questions', questionsApi);
 router.post('/api/score', userControllers.userScore);
 
+router.get('/api/score', async (req, res) => {
+  const data = await userControllers.getUserScore(req.query.email)
+  res.status(200).json(data);    
+})
+
 //Admin routes 
 router.get('/api/dashboard',userControllers.getUsers);
 // verifyUserToken.isAdmin , verifyUserToken.verifyToken,  
